@@ -1,0 +1,44 @@
+{
+  "name": "@adonisjs/adonis-redis-queue",
+  "version": "0.1.1",
+  "description": "Queue addon/plugin package built on Redis for AdonisJS 4.0+ apps",
+  "main": "index.js",
+  "files":[
+    "src",
+    "index.js"
+  ],
+  "directories":{
+    "test":"test"
+  },
+  "scripts": {
+    "test": "node test/provider.spec.js"
+  },
+  "keywords": [
+    "redis",
+    "job",
+    "worker",
+    "queue",
+    "adonisjs"
+  ],
+  "author": "StitchNG <stitchnig@gmail.com> (https://twitter.com/stitchappn)",
+  "license": "MIT",
+  "dependencies": {
+    "@adonisjs/generic-exceptions":"^2.0.1",
+    "bee-queue":"^1.2.2",
+    "debug":"^3.1.2"
+  },
+  "devDependencies": {
+    "japa": "^2.0.6",
+    "japa-cli":"^2.0.0",
+    "semver":"^5.5.0",
+    "@adonisjs/fold": "^4.0.9"
+},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stitchng/adonis-redis-queue.git"
+  },
+  "bugs": {
+    "url": "https://github.com/stitchng/adonis-redis-queue/issues"
+  },
+  "homepage": "https://github.com/stitchng/adonis-redis-queue"
+}
