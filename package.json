@@ -31,6 +31,7 @@
     "japa": "^2.0.6",
     "japa-cli":"^2.0.0",
     "semver":"^5.5.0",
+    "@adonisjs/sink":"^1.0.6",
     "@adonisjs/fold": "^4.0.9"
 },
   "repository": {
