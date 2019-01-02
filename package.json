@@ -5,6 +5,9 @@
   "main": "index.js",
   "files":[
     "src",
+    "config",
+    "providers",
+    "instruction.js",
     "index.js"
   ],
   "directories":{
