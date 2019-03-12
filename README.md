@@ -10,7 +10,7 @@ An addon/plugin package to provide Redis based queueing services in AdonisJS 4.0
 ## Getting Started
 ```bash
 
-    npm i --save adonisjs-redis-queue
+    adonis install adonisjs-redis-queue
 
 ```
 
