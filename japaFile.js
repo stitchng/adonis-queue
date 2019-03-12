@@ -1,5 +1,6 @@
 'use strict'
 
-const cli = require('japa/cli')
-cli.run('test/*.js')
-//cli.run('test/**/*.js')
+const { configure } = require('japa')
+configure({
+  files: ['test/**/*.spec.js']
+})
