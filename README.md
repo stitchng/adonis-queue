@@ -26,6 +26,7 @@ An addon/plugin package to provide Redis based queueing services in AdonisJS 4.0
 
 ```js
 
+const Job = use('Job')
 const Mail = use('Mail')
 
 class SendEmail extends Job {
@@ -79,8 +80,10 @@ module.exports = SendEmail
 const Event = use('Event')
 const Queue = use('Queue')
 
+const SendEmail = use('App/Jobs/SendEmail')
+
 Event.on('user_registered', async () => {
-    let job = await Queue.dispatch(new EmailSender(
+    let job = await Queue.dispatch(new SendEmail(
     
     ))
 })
