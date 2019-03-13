@@ -16,11 +16,57 @@ An addon/plugin package to provide Redis based queueing services in AdonisJS 4.0
 
 ## Usage
 
->Add a job file to the jobs folder using the command. The command below creates the file `app/Jobs/EmailSender.js`
+>Add a job file to the jobs folder using the command. The command below creates the file `app/Jobs/SendEmail.js`
 
 ```bash
 
-    $ adonis make:job EmailSender
+    $ adonis make:job SendEmail
+
+```
+
+```js
+
+const Mail = use('Mail')
+
+class SendEmail extends Job {
+
+    static get queue(){
+        return 'main'
+    }
+    
+	constructor(emailAddress, emailFrom, emailSubject, emailBody) {
+		super(arguments)
+
+		this.timeOut = 50; // seconds
+		this.retryCount = 3;
+		this.retryUntil = 200; // seconds
+	}
+
+	async handle(link, done) {
+		//....
+		console.log(`Job [${this.constructor.name}] - handler called: status=running; id=${this.id} `)
+    
+		link.reportProgress(10)
+
+		let _data = this
+
+		await Mail.send(_data.emailBody, {gender:'F', fullname:"Aisha Salihu"}, (message) => {
+			message.to(_data.emailAddress) 
+			message.from(_data.emailFrom) 
+			message.subject(_data.emailSubject)
+		})
+
+		//...
+		link.reportProgress(100)
+	}
+
+	async failed(error) {
+    
+		console.log(`Job [${this.constructor.name}] - status:failed; id=${this.id} `, error)
+	}
+}
+
+module.exports = SendEmail
 
 ```
 
