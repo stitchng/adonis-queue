@@ -1,5 +1,5 @@
 # adonis-queue
-An addon/plugin package to provide Redis based queueing services in AdonisJS 4.0+
+An addon/plugin package to provide driver-based job queueing services in AdonisJS 4.0+
 
 [![NPM Version][npm-image]][npm-url]
 [![Build Status][travis-image]][travis-url]
@@ -10,7 +10,7 @@ An addon/plugin package to provide Redis based queueing services in AdonisJS 4.0
 ## Getting Started
 ```bash
 
-    adonis install adonisjs-redis-queue
+    adonis install adonisjs-queue
 
 ```
 
@@ -120,14 +120,14 @@ MIT
 
 ## Contributing
 
-See the [CONTRIBUTING.md](https://github.com/stitchng/adonis-redis-queue/blob/master/CONTRIBUTING.md) file for info
+See the [CONTRIBUTING.md](https://github.com/stitchng/adonis-queue/blob/master/CONTRIBUTING.md) file for info
 
-[npm-image]: https://img.shields.io/npm/v/adonisjs-redis-queue.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/adonisjs-redis-queue
+[npm-image]: https://img.shields.io/npm/v/adonisjs-queue.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/adonisjs-queue
 
-[travis-image]: https://img.shields.io/travis/stitchng/adonis-redis-queue/master.svg?style=flat-square
-[travis-url]: https://travis-ci.org/stitchng/adonis-redis-queue
+[travis-image]: https://img.shields.io/travis/stitchng/adonis-queue/master.svg?style=flat-square
+[travis-url]: https://travis-ci.org/stitchng/adonis-queue
 
-[coveralls-image]: https://img.shields.io/coveralls/stitchng/adonis-redis-queue/develop.svg?style=flat-square
+[coveralls-image]: https://img.shields.io/coveralls/stitchng/adonis-queue/develop.svg?style=flat-square
 
-[coveralls-url]: https://coveralls.io/github/stitchng/adonis-redis-queue
+[coveralls-url]: https://coveralls.io/github/stitchng/adonis-queue
