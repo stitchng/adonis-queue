@@ -75,7 +75,7 @@ module.exports = SendEmail
 
 ```
 
->Open the `start/events.js` file of an **AdonisJS Framework** installation and add the following code to it (This package makes use of the standard event bus for **AdonisJS**)
+>Open the `start/events.js` file of an **AdonisJS Framework** installation and add the following code to it (This package encourages the use of the standard event bus for **AdonisJS**)
 
 ```js
 
