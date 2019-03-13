@@ -31,9 +31,13 @@ const Mail = use('Mail')
 
 class SendEmail extends Job {
 
-    static get queue(){
-        return 'main'
-    }
+	static get driver() {
+		return 'redis'
+	}
+	
+    	static get queue(){
+		return 'main'
+    	}
     
 	constructor(emailAddress, emailFrom, emailSubject, emailBody) {
 		super(arguments)
