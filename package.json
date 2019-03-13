@@ -1,5 +1,5 @@
 {
-  "name": "@adonisjs/adonis-redis-queue",
+  "name": "adonisjs-queue",
   "version": "0.1.1",
   "description": "Queue addon/plugin package built on Redis for AdonisJS 4.0+ apps",
   "main": "index.js",
