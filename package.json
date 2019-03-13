@@ -1,7 +1,7 @@
 {
   "name": "adonisjs-queue",
   "version": "0.1.1",
-  "description": "Queue addon/plugin package built on Redis for AdonisJS 4.0+ apps",
+  "description": "An addon/plugin package to provide driver-based job queueing services in AdonisJS 4.0+",
   "main": "index.js",
   "files":[
     "src",
