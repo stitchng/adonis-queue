@@ -36,7 +36,7 @@ class SendEmail extends Job {
 	}
 	
     	static get queue(){
-		return 'main'
+		return 'low'
     	}
     
 	constructor(emailAddress, emailFrom, emailSubject, emailBody) {
@@ -88,7 +88,10 @@ const SendEmail = use('App/Jobs/SendEmail')
 
 Event.on('user_registered', async () => {
     let job = await Queue.dispatch(new SendEmail(
-    
+    	'queensaisha04@gmail.com',
+	'support@example.com',
+	'YOU ARE WELCOME',
+	'emails.template' // AdonisJS view template file in "resources/views"
     ))
 })
 
