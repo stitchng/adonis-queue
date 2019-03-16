@@ -3,7 +3,7 @@
 const Env = use('Env');
 
 module.exports = {
-    main:{
+    high:{
         prefix: 'main-',
         stallInterval: 5000,
         nearTermWindow: 1200000,
@@ -11,7 +11,7 @@ module.exports = {
         redis: {
             host: '127.0.0.1',
             port: 6379,
-            db: 0,
+            db: 1,
             options: {}
         },
         isWorker: true,
@@ -25,14 +25,14 @@ module.exports = {
         redisScanCount: 100
     },
     low:{
-        prefix: 'low-',
-        stallInterval: 5000,
+        prefix: 'main-',
+        stallInterval: 8000,
         nearTermWindow: 1200000,
-        delayedDebounce: 1000,
+        delayedDebounce: 2000,
         redis: {
             host: '127.0.0.1',
             port: 6379,
-            db: 1,
+            db: 2,
             options: {}
         },
         isWorker: true,
