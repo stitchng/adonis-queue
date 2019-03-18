@@ -101,7 +101,7 @@ const Queue = use('Queue')
 const SendEmail = use('App/Jobs/SendEmail')
 
 Event.on('user_registered', async () => {
-    await Queue.dispatch(new SendEmail(
+    await Queue.select('high').andDispatch(new SendEmail(
     	'queensaisha04@gmail.com',
 	'support@example.com',
 	'YOU ARE WELCOME',
