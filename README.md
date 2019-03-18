@@ -51,23 +51,37 @@ class SendEmail extends Job {
 		//....
 		console.log(`Job [${this.constructor.name}] - handler called: status=running; id=${this.id} `)
     
-		link.reportProgress(10)
+		link.reportProgress(18)
 
-		let _data = this
+		let _data = link.data // arguments passed into the constructor
+		let error = null
+		let result = null
 
-		await Mail.send(_data.emailBody, {gender:'F', fullname:"Aisha Salihu"}, (message) => {
-			message.to(_data.emailAddress) 
-			message.from(_data.emailFrom) 
-			message.subject(_data.emailSubject)
-		})
+		try{
+			result = await Mail.send(_data.emailBody, {gender:'F', fullname:"Aisha Salihu"}, (message) => {
+				message.to(_data.emailAddress) 
+				message.from(_data.emailFrom) 
+				message.subject(_data.emailSubject)
+			})
+		}catch(err){
+			error = err
+		}finally{
 
-		//...
-		link.reportProgress(100)
+			//...
+			link.reportProgress(98)
+			
+			return error || result
+		}
 	}
 
-	async failed(error) {
+	failed(link, error) {
     
 		console.log(`Job [${this.constructor.name}] - status:failed; id=${this.id} `, error)
+	}
+	
+	retrying(link, error){
+	
+		console.log(`Job [${this.constructor.name}] - status:retrying; id=${this.id} `, error)
 	}
 }
 
@@ -87,13 +101,44 @@ const Queue = use('Queue')
 const SendEmail = use('App/Jobs/SendEmail')
 
 Event.on('user_registered', async () => {
-    let job = await Queue.dispatch(new SendEmail(
+    await Queue.dispatch(new SendEmail(
     	'queensaisha04@gmail.com',
 	'support@example.com',
 	'YOU ARE WELCOME',
 	'emails.template' // AdonisJS view template file in "resources/views"
     ))
 })
+
+```
+
+>You can also access the queue instance via the http context in a controller/middleware
+
+```js
+
+'use strict'
+
+const SendEmail = use('App/Jobs/SendEmail')
+
+class WorksController {
+
+	async sendEmail({ request, queue, session }){
+	
+		let tenant_id = session.get('tenant_id')
+		
+		let email = request.only([
+			'email'
+		])
+		
+		await queue.dispatch(new SendEmail(
+			email,
+			'support@example.com',
+			'YOU ARE WELCOME',
+			'emails.template' // AdonisJS view template file in "resources/views"
+		))
+	}
+}
+
+module.exports = WorksController
 
 ```
 
