@@ -76,7 +76,7 @@ class JobsQueue {
                     _job.on('failed', job.failed.bind(job))
                     _job.on('succeeded', job.succeeded.bind(job))
                     _job.on('retrying', job.retrying.bind(job))
-                    queue.process(5, job.handle.bind(job))
+                    queue.process(2, job.handle.bind(job))
                 })
                  
                 return _job.setId(this._jobUuid)
