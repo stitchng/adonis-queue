@@ -1,6 +1,6 @@
 'use strict'
 
-class JobsQueue {
+class Queue {
     constructor(QueueController, Exception, Config){
         this.QueueController = QueueController; // bee-queue constructor
       
@@ -135,4 +135,4 @@ class JobsQueue {
     }
 }
 
-module.exports = JobsQueue
+module.exports = Queue
