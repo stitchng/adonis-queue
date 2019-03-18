@@ -2,7 +2,7 @@
 
 const { ServiceProvider } = require('@adonisjs/fold')
 
-class CommandsProvider extends ServiceProvider {
+class JobCommandsProvider extends ServiceProvider {
     register () {
     
     }
@@ -12,4 +12,4 @@ class CommandsProvider extends ServiceProvider {
     }
 }
 
-module.exports = CommandsProvider
+module.exports = JobCommandsProvider
