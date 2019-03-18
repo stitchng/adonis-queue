@@ -23,9 +23,9 @@ const drivers = require('./Drivers')
  * @singleton
  * @group Http
  *
- * @class QueueManager
+ * @class Manager
  */
-class QueueManager {
+class Manager {
   constructor () {
     this._drivers = {}
   }
@@ -65,4 +65,4 @@ class QueueManager {
   }
 }
 
-module.exports = new QueueManager()
+module.exports = new Manager()
