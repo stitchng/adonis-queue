@@ -101,7 +101,7 @@ const Queue = use('Queue')
 const SendEmail = use('App/Jobs/SendEmail')
 
 Event.on('user_registered', async () => {
-    await Queue.select('high').andDispatch(new SendEmail(
+    await Queue.select('high').andDispatch(new SendEmail( // dispatch to the "high" priority queue
     	'queensaisha04@gmail.com',
 	'support@example.com',
 	'YOU ARE WELCOME',
@@ -125,11 +125,11 @@ class WorksController {
 	
 		let tenant_id = session.get('tenant_id')
 		
-		let email = request.only([
+		let { email } = request.only([
 			'email'
 		])
 		
-		await queue.dispatch(new SendEmail(
+		await queue.dispatch(new SendEmail( // dispatch to the "low" priority queue
 			email,
 			'support@example.com',
 			'YOU ARE WELCOME',
