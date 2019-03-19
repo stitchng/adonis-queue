@@ -16,6 +16,6 @@ module.exports = async function (cli) {
    await cli.makeConfig('queue.js', path.join(__dirname, './config/queue.js'))
     cli.command.completed('create', 'config/queue.js')
   } catch (error) {
-    // ignore if extension.js file already exists
+    // ignore if queue.js file already exists
   }
 }
