@@ -26,7 +26,7 @@ class Queue {
     select(name, driver){
       
         if(!name){
-           name = 'main'
+           name = 'high'
         }
       
         if(!driver){
