@@ -47,6 +47,14 @@ class Job {
 			return attachArgsToTarget(derived, derivedArgs);
 		};
 	}
+	
+	static get driver() {
+		return 'redis'
+	}
+	
+    	static get queue(){
+		return 'high'
+    	}
 
 	async handle() {
 		throw new Error('Method Invocation Invalid')
@@ -57,28 +65,28 @@ class Job {
 		console.log(`Report Progress: id=${this.id}`, `${progress}%`)
 	}
   
-  succeeded() {
+  	succeeded() {
     
 		throw new Error('Method Invocation Invalid')
 	}
   
-  failed() {
+  	failed() {
     
 		throw new Error('Method Invocation Invalid')
 	}
   
-  retrying() {
+  	retrying() {
     
 		throw new Error('Method Invocation Invalid')
 	}
   
-  async detach(queue){
-      if(queue && typeof queue.removeJob === 'function'){
-          return queue.removeJob(this.id)
-      }
+  	async detach(queue){
+      		if(queue && typeof queue.removeJob === 'function'){
+          		return queue.removeJob(this.id)
+      		}
     
-      return Promise.resolve(null)
-  }
+      		return Promise.resolve(null)
+  	}
 }
 
 module.exports = Job
