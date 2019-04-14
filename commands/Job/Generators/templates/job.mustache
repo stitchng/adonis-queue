@@ -1,0 +1,37 @@
+'use strict'
+
+const Job = use('Job')
+
+class {{name}} extends Job {
+  
+    constructor(){
+      super(arguments)
+      
+      this.timeOut = 10; // seconds: time out for queue
+      this.retryCount = 1; // number of times to retry
+      this.retryUntil = 200; // seconds: retry delay
+    }
+
+
+	async handle(link, done) {
+		//....
+		console.log(`Job [${this.constructor.name}] - handler called: status=running; id=${this.id} `)
+    }
+  
+    failed(link, error) {
+        // ...
+		console.log(`Job [${this.constructor.name}] - status:failed; id=${this.id} `, error)
+	}
+	
+	retrying(link, error){
+        // ...
+		console.log(`Job [${this.constructor.name}] - status:retrying; id=${this.id} `, error)
+	}
+
+    succeeded(link){
+        // ...
+        console.log(`Job [${this.constructor.name}] - status:succeeded; id=${this.id} `)
+    }
+}
+
+module.exports = {{name}}

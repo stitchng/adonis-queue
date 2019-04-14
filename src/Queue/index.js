@@ -70,7 +70,9 @@ class Queue {
                  this._currentlySelectedQueueName = null;
           
                  let _job = queue.createJob(job.getArg(job))
-          
+                 
+                 job.setQueueTarget(queue)
+
                  process.nextTick(() => {
                     job.id = this._jobUuid
                     _job.on('failed', job.failed.bind(job))

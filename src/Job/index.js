@@ -43,6 +43,17 @@ const attachArgsToTarget = function (func, funcArgs, box) {
 class Job {
 	constructor(derivedArgs) {
 		this.id = null;
+
+		var _queue = null;
+
+		this.setQueueTarget = function($queue){
+			_queue = $queue
+		};
+
+		this.getQueueTarget = function(){
+			return _queue
+		};
+
 		this.getArg = function (derived) {
 			return attachArgsToTarget(derived, derivedArgs);
 		};
@@ -52,40 +63,38 @@ class Job {
 		return 'redis'
 	}
 	
-    	static get queue(){
+	static get queue(){
 		return 'high'
-    	}
+	}
 
 	async handle() {
 		throw new Error('Method Invocation Invalid')
 	}
 
 	progress(progress) {
-    
-		console.log(`Report Progress: id=${this.id}`, `${progress}%`)
+		throw new Error('Method Invocation Invalid')		
 	}
   
   	succeeded() {
-    
 		throw new Error('Method Invocation Invalid')
 	}
   
   	failed() {
-    
 		throw new Error('Method Invocation Invalid')
 	}
   
   	retrying() {
-    
 		throw new Error('Method Invocation Invalid')
 	}
   
-  	async detach(queue){
-      		if(queue && typeof queue.removeJob === 'function'){
-          		return queue.removeJob(this.id)
-      		}
-    
-      		return Promise.resolve(null)
+  	async detach(){
+		let queue = this.getQueueTarget()
+
+		if((queue !== null) && typeof queue.removeJob === 'function'){
+			return await queue.removeJob(this.id)
+		}
+
+		return await Promise.resolve(queue)
   	}
 }
 
