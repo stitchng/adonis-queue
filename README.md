@@ -89,8 +89,6 @@ class SendEmail extends Job {
 	succeeded(link){
 	
 		console.log(`Job [${this.constructor.name}] - status:succeeded; id=${this.id} `)
-		
-		this.detach() // remove the job from the queue (when the job succeeds)
 	}
 }
 
