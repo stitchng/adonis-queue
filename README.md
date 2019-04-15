@@ -77,11 +77,20 @@ class SendEmail extends Job {
 	failed(link, error) {
     
 		console.log(`Job [${this.constructor.name}] - status:failed; id=${this.id} `, error)
+		
+		this.detach() // remove the job from the queue (when the job fails after 3 retries)
 	}
 	
 	retrying(link, error){
 	
 		console.log(`Job [${this.constructor.name}] - status:retrying; id=${this.id} `, error)
+	}
+	
+	succeeded(link){
+	
+		console.log(`Job [${this.constructor.name}] - status:succeeded; id=${this.id} `)
+		
+		this.detach() // remove the job from the queue (when the job succeeds)
 	}
 }
 
