@@ -1,5 +1,7 @@
 'use strict'
 
+const bqScripts = require('bee-queue/lib/lua');
+
 class Queue {
   constructor (QueueController, Exception, Config) {
     this.QueueController = QueueController // bee-queue constructor
@@ -37,7 +39,9 @@ class Queue {
 
     const queueConfig = this.getByName(name)
 
-    this._queuesPool[name] = new this.QueueController(name, queueConfig)
+    this._queuesPool[name] = new this.QueueController(name, queueConfig).on('ready', () => {
+        console.log(`@@adonis/Queue: Queue [${name}] now ready`);
+    });
     this._currentlySelectedQueueName = name
     return this
   }
@@ -63,6 +67,8 @@ class Queue {
       }
 
       this._jobUuid += 1
+      
+      let _name = this._currentlySelectedQueueName
       this._currentlySelectedQueueName = null
 
       let _job = queue.createJob(job.getArg(job))
@@ -81,7 +87,18 @@ class Queue {
         .timeout(job.timeOut || 0)
         .backoff('fixed', job.retryUntil || 0)
         .retries(job.retryCount || 2)
-        .save()
+        .save(async (err, job) => { // See: https://github.com/bee-queue/bee-queue/issues/147
+            if (err) {
+              console.error(`@@adonisjs/Queue: failed creating job ${this._jobUuid}`);
+              // Known error when redis has not all lua scripts loaded properly
+              if (err.command === 'EVALSHA') {
+               await bqScripts.buildCache(this.getByName(_name));
+               console.info('Successfully reloaded Lua scripts into cache!');
+               // create job again
+               queue.createJob(job.getArg(job)).save();
+             }
+           }
+       })
     }
 
     return new Promise((resolve, reject) => {
