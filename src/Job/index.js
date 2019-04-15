@@ -37,11 +37,10 @@ const attachArgsToTarget = function (func, funcArgs, box) {
   return box
 }
 
-// const Logger = use('Logger')
-
 class Job {
   constructor (derivedArgs) {
     this.id = null
+    this._logger = null
 
     var _queue = null
 
@@ -64,6 +63,10 @@ class Job {
 
   static get queue () {
     return 'high'
+  }
+
+  static set logger (newLogger) {
+    this.prototype._logger = newLogger
   }
 
   async handle () {
@@ -90,6 +93,7 @@ class Job {
     let queue = this.getQueueTarget()
 
     if ((queue !== null) && typeof queue.removeJob === 'function') {
+      this._logger.info('@@adonis/Queue: removing job from queue...')
       return queue.removeJob(this.id)
     }
 

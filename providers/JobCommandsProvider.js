@@ -3,12 +3,39 @@
 const { ServiceProvider } = require('@adonisjs/fold')
 
 class JobCommandsProvider extends ServiceProvider {
-  register () {
-
+  /**
+   * Registers providers for all the {queue} job related
+   * commands
+   *
+   * @method _registerMakeJobCommand
+   *
+   * @return {void}
+   */
+  _registerMakeJobCommand () {
+    this.app.bind('Adonis/Commands/Make:Job', () => require('../app/Commands/MakeJob'))
   }
 
-  boot () {
+  /**
+   * Register all the required job commands providers
+   *
+   * @method register
+   *
+   * @return {void}
+   */
+  register () {
+    this._registerMakeJobCommand()
+  }
 
+  /**
+   * On boot add commands with ace
+   *
+   * @method boot
+   *
+   * @return {void}
+   */
+  boot () {
+    const ace = require('@adonisjs/ace')
+    ace.addCommand('Adonis/Commands/Make:Job')
   }
 }
 

@@ -1,10 +1,10 @@
 'use strict'
 
-const bqScripts = require('bee-queue/lib/lua');
+const bqScripts = require('bee-queue/lib/lua')
 
 class Queue {
-  constructor (QueueController, Exception, Config) {
-    this.QueueController = QueueController // bee-queue constructor
+  constructor (QueueManager, Exception, Config) {
+    this.manager = QueueManager
 
     this._jobUuid = 0
     this._queuesPool = {}
@@ -37,11 +37,11 @@ class Queue {
       return this
     }
 
-    const queueConfig = this.getByName(name)
-
-    this._queuesPool[name] = new this.QueueController(name, queueConfig).on('ready', () => {
-        console.log(`@@adonis/Queue: Queue [${name}] now ready`);
-    });
+    this._queuesPool[name] = this.manager.makeDriverInstance(driver, DriverClass => {
+      return new DriverClass(name, this.getByName(name))
+    })/* .on('ready', () => {
+      console.log(`@@adonis/Queue: Queue [${name}] now ready`)
+    }) */
     this._currentlySelectedQueueName = name
     return this
   }
@@ -67,7 +67,7 @@ class Queue {
       }
 
       this._jobUuid += 1
-      
+
       let _name = this._currentlySelectedQueueName
       this._currentlySelectedQueueName = null
 
@@ -88,17 +88,17 @@ class Queue {
         .backoff('fixed', job.retryUntil || 0)
         .retries(job.retryCount || 2)
         .save(async (err, job) => { // See: https://github.com/bee-queue/bee-queue/issues/147
-            if (err) {
-              console.error(`@@adonisjs/Queue: failed creating job ${this._jobUuid}`);
-              // Known error when redis has not all lua scripts loaded properly
-              if (err.command === 'EVALSHA') {
-               await bqScripts.buildCache(this.getByName(_name));
-               console.info('Successfully reloaded Lua scripts into cache!');
-               // create job again
-               queue.createJob(job.getArg(job)).save();
-             }
-           }
-       })
+          if (err) {
+            console.error(`@@adonisjs/Queue: failed creating job ${this._jobUuid}`)
+            // Known error when redis has not all lua scripts loaded properly
+            if (err.command === 'EVALSHA') {
+              await bqScripts.buildCache(this.getByName(_name))
+              console.info('Successfully reloaded Lua scripts into cache!')
+              // create job again
+              queue.createJob(job.getArg(job)).save()
+            }
+          }
+        })
     }
 
     return new Promise((resolve, reject) => {
@@ -108,6 +108,14 @@ class Queue {
     })
   }
 
+  async destroyAll () {
+    for (let queue of this._queuesPool) {
+      await queue.destroy()
+    }
+
+    this._queuesPool = {}
+  }
+
   async getHealthStatus () {
     let queue = this._currentlySelectedQueueName && this._queuesPool[this._currentlySelectedQueueName]
 
@@ -115,7 +123,7 @@ class Queue {
       throw new Error('@@adonis/Queue: No Queue Selected/Added To Pool')
     }
 
-    this._currentlySelectedQueueName = null
+    // this._currentlySelectedQueueName = null
 
     return queue.checkHealth()
   }

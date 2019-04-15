@@ -4,45 +4,49 @@ const { ServiceProvider } = require('@adonisjs/fold')
 
 class QueueProvider extends ServiceProvider {
   /**
-       * Registers manager under `Adonis/Src/Queue`
-       * namespace
-       *
-       * @method _registerManager
-       *
-       * @return {void}
-       *
-       * @private
-       */
+   * Registers manager under `Adonis/Src/Queue`
+   * namespace
+   *
+   * @method _registerManager
+   *
+   * @return {void}
+   *
+   * @private
+   */
   _registerManager () {
     this.app.manager('Adonis/Src/Queue', require('../src/Queue/Manager'))
   }
 
   /**
-       * Registers provider under `Adonis/Src/Queue`
-       * namespace.
-       *
-       * @method _registerProvider
-       *
-       * @return {void}
-       *
-       * @private
-       */
+   * Registers provider under `Adonis/Src/Queue`
+   * namespace.
+   *
+   * @method _registerProvider
+   *
+   * @return {void}
+   *
+   * @private
+   */
   _registerProvider () {
     this.app.bind('Adonis/Src/Queue', () => {
-      return require('../src/Queue/Manager')
+      const Manager = require('../src/Queue/Manager.js')
+
+      return new Manager({
+        'redis': 'bee-queue'
+      })
     })
   }
 
   /**
-       * Registers instance under `Adonis/Addon/Queue`
-       * namespace.
-       *
-       * @method _registerInstance
-       *
-       * @return {void}
-       *
-       * @private
-       */
+   * Registers instance under `Adonis/Addon/Queue`
+   * namespace.
+   *
+   * @method _registerInstance
+   *
+   * @return {void}
+   *
+   * @private
+   */
   _registerInstance () {
     this.app.singleton('Adonis/Addon/Queue', () => {
       const Config = this.app.use('Adonis/Src/Config')

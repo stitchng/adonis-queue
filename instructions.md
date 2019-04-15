@@ -4,7 +4,19 @@ Like any other provider, you need to register the provider inside `start/app.js`
 
 ```js
 const providers = [
-  '@adonisjs/adonis-redis-queue/providers/QueueProvider'
+  ...
+  'adonisjs-queue/providers/QueueProvider',
+  'adonisjs-queue/providers/JobProvider'
+]
+```
+Also, you need to register the provider for job
+commands via ace inside the same `start/app.js` file.
+
+```js
+
+const aceProviders = [
+  ...
+  'adonisjs-queue/providers/JobCommandsProvider'
 ]
 ```
 
@@ -14,4 +26,4 @@ The configuration is saved inside `config/queue.js` file. Tweak it accordingly.
 
 ## Docs
 
-To find out more, read the docs [here](https://github.com/stitchng/adonis-redis-queue).
+To find out more, read the docs [here](https://github.com/stitchng/adonis-queue).

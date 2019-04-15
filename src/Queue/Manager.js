@@ -26,8 +26,8 @@ const drivers = require('./Drivers')
  * @class Manager
  */
 class Manager {
-  constructor () {
-    this._drivers = {}
+  constructor (defaultDrivers = {}) {
+    this._drivers = defaultDrivers
   }
 
   /**
@@ -42,7 +42,9 @@ class Manager {
    * @return {void}
    */
   extend (key, implementation) {
-    this._drivers[key] = implementation
+    if (!this._drivers[key]) {
+      this._drivers[key] = implementation
+    }
   }
 
   /**
@@ -50,19 +52,31 @@ class Manager {
    *
    * @method makeDriverInstance
    *
-   * @param  {String}           name
+   * @param  {String} name
+   * @param  {Function} creatorCallback
    *
    * @return {Object}
    */
-  makeDriverInstance (name) {
-    const driver = drivers[name] || this._drivers[name]
+  makeDriverInstance (name, creatorCallback) {
+    const driver = drivers[name] || this._drivers[name] || ''
     if (!driver) {
       throw GE
         .InvalidArgumentException
         .invoke(`${name} is not a valid queue driver`, 500, 'E_INVALID_QUEUE_DRIVER')
     }
-    return ioc.make(driver)
+
+    if (typeof creatorCallback !== 'function') {
+      throw GE
+        .InvalidArgumentException
+        .invoke(`creatorCallback not provided`, 500, 'E_INVALID_QUEUE_DRIVER')
+    }
+
+    if (driver.indexOf('/') === -1) {
+      return creatorCallback(require(driver))
+    }
+
+    return creatorCallback(ioc.make(driver))
   }
 }
 
-module.exports = new Manager()
+module.exports = Manager

@@ -12,9 +12,9 @@ module.exports = {
       host: '127.0.0.1',
       port: 6379,
       db: 1,
-      options: {attempt:20},
-      retry_strategy(options) {
-        return Math.min(options.attempt * 100, 3000);
+      options: { attempt: 20 },
+      retry_strategy (options) {
+        return Math.min(options.attempt * 100, 3000)
       }
     },
     isWorker: true,
@@ -37,9 +37,9 @@ module.exports = {
       host: '127.0.0.1',
       port: 6379,
       db: 2,
-      options: {attempt:20},
-      retry_strategy(options) {
-        return Math.min(options.attempt * 100, 3000);
+      options: { attempt: 20 },
+      retry_strategy (options) {
+        return Math.min(options.attempt * 100, 3000)
       }
     },
     isWorker: true,
