@@ -70,8 +70,12 @@ class SendEmail extends Job {
 			//...
 			link.reportProgress(98)
 			
-			return error || result
+			if(error){
+				throw error
+			}
 		}
+		
+		return result
 	}
 
 	failed(link, error) {
