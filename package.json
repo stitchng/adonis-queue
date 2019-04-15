@@ -3,15 +3,15 @@
   "version": "0.1.1",
   "description": "An addon/plugin package to provide driver-based job queueing services in AdonisJS 4.0+",
   "main": "index.js",
-  "files":[
+  "files": [
     "src",
     "config",
     "providers",
     "instruction.js",
     "index.js"
   ],
-  "directories":{
-    "test":"test"
+  "directories": {
+    "test": "test"
   },
   "scripts": {
     "test": "node test/provider.spec.js"
@@ -19,25 +19,40 @@
   "keywords": [
     "redis",
     "job",
+    "bee-queue",
     "worker",
     "queue",
     "adonisjs"
   ],
   "author": "StitchNG <stitchnig@gmail.com> (https://twitter.com/stitchappn)",
   "license": "MIT",
+  "nyc": {
+    "exclude": [
+      "test"
+    ]
+  },
+  "standard": {
+    "globals": [
+      "use",
+      "test"
+    ]
+  },
   "dependencies": {
-    "@adonisjs/generic-exceptions":"^2.0.1",
-    "@adonisjs/ace":"^5.0.2",
-    "bee-queue":"^1.2.2",
-    "debug":"^3.1.2"
+    "@adonisjs/generic-exceptions": "^2.0.1",
+    "@adonisjs/ace": "^5.0.2",
+    "bee-queue": "^1.2.2",
+    "debug": "^3.1.2"
   },
   "devDependencies": {
-    "japa": "^2.0.6",
-    "japa-cli":"^2.0.0",
-    "semver":"^5.5.0",
-    "@adonisjs/sink":"^1.0.6",
+    "japa": "^2.0.5",
+    "japa-cli": "^1.0.1",
+    "nyc": "^13.0.1",
+    "semver": "^5.5.0",
+    "coveralls": "^3.0.2",
+    "standard": "^12.0.1",
+    "@adonisjs/sink": "^1.0.6",
     "@adonisjs/fold": "^4.0.9"
-},
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/stitchng/adonis-redis-queue.git"

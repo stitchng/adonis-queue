@@ -3,8 +3,7 @@
 const { ServiceProvider } = require('@adonisjs/fold')
 
 class QueueProvider extends ServiceProvider {
-    
-      /**
+  /**
        * Registers manager under `Adonis/Src/Queue`
        * namespace
        *
@@ -14,11 +13,11 @@ class QueueProvider extends ServiceProvider {
        *
        * @private
        */
-      _registerManager () {
-        this.app.manager('Adonis/Src/Queue', require('../src/Queue/Manager'))
-      }
-    
-      /**
+  _registerManager () {
+    this.app.manager('Adonis/Src/Queue', require('../src/Queue/Manager'))
+  }
+
+  /**
        * Registers provider under `Adonis/Src/Queue`
        * namespace.
        *
@@ -28,13 +27,13 @@ class QueueProvider extends ServiceProvider {
        *
        * @private
        */
-      _registerProvider () {
-        this.app.bind('Adonis/Src/Queue', () => {
-          return require('../src/Queue/Manager')
-        })
-      }
-    
-      /**
+  _registerProvider () {
+    this.app.bind('Adonis/Src/Queue', () => {
+      return require('../src/Queue/Manager')
+    })
+  }
+
+  /**
        * Registers instance under `Adonis/Addon/Queue`
        * namespace.
        *
@@ -44,33 +43,33 @@ class QueueProvider extends ServiceProvider {
        *
        * @private
        */
-      _registerInstance () {
-        this.app.singleton('Adonis/Addon/Queue', () => {
-              const Config = this.app.use('Adonis/Src/Config')
-              const Exception = this.app.use('Exception')
-              const Queue = require('../src/Queue/index.js')
+  _registerInstance () {
+    this.app.singleton('Adonis/Addon/Queue', () => {
+      const Config = this.app.use('Adonis/Src/Config')
+      const Exception = this.app.use('Exception')
+      const Queue = require('../src/Queue/index.js')
 
-              const QueueManager = this.app.use('Adonis/Src/Queue')
-              return new Queue(/*require('bee-queue')*/QueueManager, Exception, Config)
-        })
+      const QueueManager = this.app.use('Adonis/Src/Queue')
+      return new Queue(/* require('bee-queue') */QueueManager, Exception, Config)
+    })
 
-        this.app.alias('Adonis/Addon/Queue', 'Queue')
-      }
+    this.app.alias('Adonis/Addon/Queue', 'Queue')
+  }
 
-    /**
+  /**
    * Register method called by ioc container
    *
    * @method register
    *
    * @return {void}
    */
-        register(){
-            this._registerManager()
-            this._registerProvider()
-            this._registerInstance()
-        }
-    
-      /**
+  register () {
+    this._registerManager()
+    this._registerProvider()
+    this._registerInstance()
+  }
+
+  /**
    * Boot the provider
    *
    * @method boot
@@ -81,9 +80,9 @@ class QueueProvider extends ServiceProvider {
     const HttpContext = this.app.use('Adonis/Src/HttpContext')
     const Config = this.app.use('Adonis/Src/Config')
     const QueueManager = this.app.use('Adonis/Src/Queue')
-    
+
     const Exception = this.app.use('Exception')
-    
+
     /**
      * Adding getter to the HTTP context. Please note the queue
      * instance...

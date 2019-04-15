@@ -13,7 +13,7 @@ const path = require('path')
 
 module.exports = async function (cli) {
   try {
-   await cli.makeConfig('queue.js', path.join(__dirname, './config/queue.js'))
+    await cli.makeConfig('queue.js', path.join(__dirname, './config/queue.js'))
     cli.command.completed('create', 'config/queue.js')
   } catch (error) {
     // ignore if queue.js file already exists
