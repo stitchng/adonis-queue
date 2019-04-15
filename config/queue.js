@@ -12,7 +12,7 @@ module.exports = {
       host: '127.0.0.1',
       port: 6379,
       db: 1,
-      options: {},
+      options: {attempt:20},
       retry_strategy(options) {
         return Math.min(options.attempt * 100, 3000);
       }
@@ -22,6 +22,7 @@ module.exports = {
     sendEvents: true,
     storeJobs: true,
     ensureScripts: true,
+    maxConcurrencyJobs: 4,
     activateDelayedJobs: true,
     removeOnSuccess: true,
     removeOnFailure: false,
@@ -36,7 +37,7 @@ module.exports = {
       host: '127.0.0.1',
       port: 6379,
       db: 2,
-      options: {},
+      options: {attempt:20},
       retry_strategy(options) {
         return Math.min(options.attempt * 100, 3000);
       }
@@ -46,6 +47,7 @@ module.exports = {
     sendEvents: true,
     storeJobs: true,
     ensureScripts: true,
+    maxConcurrencyJobs: 4,
     activateDelayedJobs: true,
     removeOnSuccess: true,
     removeOnFailure: false,
