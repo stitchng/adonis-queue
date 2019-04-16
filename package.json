@@ -6,8 +6,10 @@
   "files": [
     "src",
     "config",
+    "commands",
     "providers",
     "instruction.js",
+    "instructions.md",
     "index.js"
   ],
   "directories": {
