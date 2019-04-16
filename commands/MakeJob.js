@@ -41,16 +41,15 @@ class MakeJob extends Base {
    */
   async handle ({ name }, options) {
     try {
-
-      if(!options){
+      if (!options) {
         options = {}
       }
 
       if (!options.queue ||
         typeof options.queue !== 'string') {
         options.queue = 'high'
-      }else{
-        if(/^(?:high|low)$/.test(options.queue)){
+      } else {
+        if (/^(?:high|low)$/.test(options.queue)) {
           throw new Error("invalid value for \"--queue\" flag: value is either 'high' or 'low'")
         }
       }
