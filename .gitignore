@@ -33,6 +33,7 @@ bower_components
 build/Release
 
 # Dependency directories
+node_modules
 node_modules/
 jspm_packages/
 
@@ -53,6 +54,10 @@ typings/
 
 # Yarn Integrity file
 .yarn-integrity
+
+# package management files
+yarn.lock
+package-lock.json
 
 # dotenv environment variables file
 .env

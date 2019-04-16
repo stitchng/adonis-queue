@@ -1,0 +1,10 @@
+coverage
+.github
+node_modules
+.DS_Store
+npm-debug.log
+test
+.travis.yml
+.editorconfig
+out
+.nyc_output
