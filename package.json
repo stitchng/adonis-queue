@@ -57,10 +57,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/stitchng/adonis-redis-queue.git"
+    "url": "https://github.com/stitchng/adonis-queue.git"
   },
   "bugs": {
-    "url": "https://github.com/stitchng/adonis-redis-queue/issues"
+    "url": "https://github.com/stitchng/adonis-queue/issues"
   },
-  "homepage": "https://github.com/stitchng/adonis-redis-queue"
+  "homepage": "https://github.com/stitchng/adonis-queue"
 }
