@@ -24,20 +24,24 @@ An addon/plugin package to provide driver-based job queueing services in AdonisJ
 
 ```
 
+>OR
+
+```bash
+
+	$ node ace make:job SendEmail
+
+```
+
 ```js
 
 const Job = use('Job')
 const Mail = use('Mail')
 
 class SendEmail extends Job {
-
-	static get driver() {
-		return 'redis'
-	}
 	
-    	static get queue(){
+    get queue(){
 		return 'low'
-    	}
+	}
     
 	constructor(emailAddress, emailFrom, emailSubject, emailBody) {
 		super(arguments)
@@ -175,7 +179,7 @@ MIT
 ## Credits
 
 - [Ifeora Okechukwu <Head Of Technology - Oparand>](https://twitter.com/isocroft)
-- [Ahmad Aziz <Head - NodeJS Foundation>](https://instagram.com/dev_amaz)
+- [Ahmad Abdul-Aziz](https://instagram.com/dev_amaz)
 
 ## Contributing
 
@@ -187,6 +191,6 @@ See the [CONTRIBUTING.md](https://github.com/stitchng/adonis-queue/blob/master/C
 [travis-image]: https://img.shields.io/travis/stitchng/adonis-queue/master.svg?style=flat-square
 [travis-url]: https://travis-ci.org/stitchng/adonis-queue
 
-[coveralls-image]: https://img.shields.io/coveralls/stitchng/adonis-queue/develop.svg?style=flat-square
+[coveralls-image]: https://img.shields.io/coveralls/stitchng/adonis-queue/master.svg?style=flat-square
 
 [coveralls-url]: https://coveralls.io/github/stitchng/adonis-queue

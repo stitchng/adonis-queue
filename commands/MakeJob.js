@@ -13,7 +13,9 @@ class MakeJob extends Base {
   static get signature () {
     return `
     make:job 
-    { name: Name of the job }`
+    { name: Name of the job to be queued }
+    { --queue=@value: Specify queue channel to be used for dispatch }
+    `
   }
 
   /**
@@ -39,8 +41,22 @@ class MakeJob extends Base {
    */
   async handle ({ name }, options) {
     try {
+
+      if(!options){
+        options = {}
+      }
+
+      if (!options.queue ||
+        typeof options.queue !== 'string') {
+        options.queue = 'high'
+      }else{
+        if(/^(?:high|low)$/.test(options.queue)){
+          throw new Error("invalid value for \"--queue\" flag: value is either 'high' or 'low'")
+        }
+      }
+
       await this.ensureInProjectRoot()
-      await this.generateBlueprint('job', name)
+      await this.generateBlueprint('job', name, options)
     } catch ({ message }) {
       this.error(message)
     }

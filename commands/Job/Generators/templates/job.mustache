@@ -12,6 +12,9 @@ class {{name}} extends Job {
       this.retryUntil = 200; // seconds: retry delay
     }
 
+    get queue () {
+        return '{{queue}}'
+    }
 
 	async handle(link, done) {
 		//....

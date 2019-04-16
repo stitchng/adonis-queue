@@ -62,6 +62,8 @@ class JobBase extends Command {
     const data = generators[templateFor].getData(name, flags)
 
     const templateContents = await this.readFile(templateFile, 'utf-8')
+    console.log(`${this.chalk.gray('Generating file(s) for')} - ${this.chalk.cyan(name)}`)
+
     await this.generateFile(filePath, templateContents, data)
 
     const createdFile = filePath.replace(process.cwd(), '').replace(path.sep, '')

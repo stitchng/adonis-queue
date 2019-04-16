@@ -57,14 +57,6 @@ class Job {
     }
   }
 
-  static get driver () {
-    return 'redis'
-  }
-
-  static get queue () {
-    return 'high'
-  }
-
   static set logger (newLogger) {
     this.prototype._logger = newLogger
   }

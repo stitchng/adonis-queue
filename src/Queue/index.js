@@ -3,22 +3,33 @@
 const bqScripts = require('bee-queue/lib/lua')
 
 class Queue {
-  constructor (QueueManager, Exception, Config) {
-    this.manager = QueueManager
+  constructor (qManager, Exception, Config) {
+    this.manager = qManager
 
     this._jobUuid = 0
     this._queuesPool = {}
     this._currentlySelectedQueueName = null
 
+    this.getSetDriver = () => {
+      return Config.get(`queue.driver`)
+    }
+
     this.getByName = (name) => {
-      return Config.get(`queue.${name}`)
+      let driver = this.getSetDriver()
+      return Config.get(`queue.${driver}.${name}`)
     }
 
     Exception.handle('HttpException', async () => {
       try {
-        await this.close()
+        let that = this
+        let uponDestroy = that.destroyAll()
+
+        await uponDestroy.then($ => {
+          that._queuesPool = {}
+          that._jobUuid = 0
+        })
       } catch (err) {
-        console.error('@@adonis/Queue: Adonis Queue failed to shut down gracefully', err)
+        console.error('@@adonis/Queue: Adonis Queue failed to shut down properly', err)
       }
     })
   }
@@ -29,19 +40,17 @@ class Queue {
     }
 
     if (!driver) {
-      driver = 'redis'
+      driver = this.getSetDriver()
     }
 
-    if (this._queuesPool[name]) {
-      this._currentlySelectedQueueName = name
-      return this
+    if (!this._queuesPool[name]) {
+      this._queuesPool[name] = this.manager.makeDriverInstance(driver, DriverClass => {
+        return new DriverClass(name, this.getByName(name))
+      })/* .on('ready', () => {
+        console.log(`@@adonis/Queue: Queue [${name}] now ready`)
+      }) */
     }
 
-    this._queuesPool[name] = this.manager.makeDriverInstance(driver, DriverClass => {
-      return new DriverClass(name, this.getByName(name))
-    })/* .on('ready', () => {
-      console.log(`@@adonis/Queue: Queue [${name}] now ready`)
-    }) */
     this._currentlySelectedQueueName = name
     return this
   }
@@ -59,7 +68,7 @@ class Queue {
       let queue = this._currentlySelectedQueueName && this._queuesPool[this._currentlySelectedQueueName]
 
       if (queue === void 0 || queue === null) {
-        this.select(job.constructor.queue)
+        this.select(job.queue)
 
         if ((queue = this._queuesPool[this._currentlySelectedQueueName]) === null) {
           throw new Error('@@adonisjs/Queue: No Queue Selected/Added To Pool')
@@ -109,11 +118,12 @@ class Queue {
   }
 
   async destroyAll () {
-    for (let queue of this._queuesPool) {
-      await queue.destroy()
-    }
+    // See: https://stackoverflow.com/questions/44410119/in-javascript-does-using-await-inside-a-loop-block-the-loop/44410481
 
-    this._queuesPool = {}
+    for (let queue of this._queuesPool) {
+      await this.close(queue)
+      await this.destroy(queue)
+    }
   }
 
   async getHealthStatus () {
@@ -123,32 +133,25 @@ class Queue {
       throw new Error('@@adonis/Queue: No Queue Selected/Added To Pool')
     }
 
-    // this._currentlySelectedQueueName = null
+    this._currentlySelectedQueueName = null
 
     return queue.checkHealth()
   }
 
-  async close () {
-    let queue = this._currentlySelectedQueueName && this._queuesPool[this._currentlySelectedQueueName]
+  async close (queue) {
     let TIMEOUT = 80 * 1000
 
     if (queue === void 0 || queue === null) {
-      throw new Error('@@adonis/Queue: No Queue Selected/Added To Pool')
+      throw new Error('@@adonis/Queue: No Queue provided')
     }
-
-    this._currentlySelectedQueueName = null
 
     return queue.close(TIMEOUT)
   }
 
-  async destroy () {
-    let queue = this._currentlySelectedQueueName && this._queuesPool[this._currentlySelectedQueueName]
-
+  async destroy (queue) {
     if (queue === void 0 || queue === null) {
       throw new Error('@@adonis/Queue: No Queue Selected/Added To Pool')
     }
-
-    this._currentlySelectedQueueName = null
 
     return queue.destroy()
   }

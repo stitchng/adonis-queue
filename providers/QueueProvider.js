@@ -14,7 +14,10 @@ class QueueProvider extends ServiceProvider {
    * @private
    */
   _registerManager () {
-    this.app.manager('Adonis/Src/Queue', require('../src/Queue/Manager'))
+    const Manager = require('../src/Queue/Manager.js')
+    this.app.manager('Adonis/Src/Queue', new Manager({
+      'redis': 'bee-queue'
+    }))
   }
 
   /**
@@ -54,7 +57,7 @@ class QueueProvider extends ServiceProvider {
       const Queue = require('../src/Queue/index.js')
 
       const QueueManager = this.app.use('Adonis/Src/Queue')
-      return new Queue(/* require('bee-queue') */QueueManager, Exception, Config)
+      return new Queue(QueueManager, Exception, Config)
     })
 
     this.app.alias('Adonis/Addon/Queue', 'Queue')

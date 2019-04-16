@@ -11,7 +11,7 @@
 
 const { ioc } = require('@adonisjs/fold')
 const GE = require('@adonisjs/generic-exceptions')
-const drivers = require('./Drivers')
+// const drivers = require('./Drivers')
 
 /**
  * The queue manager class is exposed as IoC container
@@ -58,7 +58,8 @@ class Manager {
    * @return {Object}
    */
   makeDriverInstance (name, creatorCallback) {
-    const driver = drivers[name] || this._drivers[name] || ''
+    const driver = this._drivers[name] || ''
+
     if (!driver) {
       throw GE
         .InvalidArgumentException
@@ -71,7 +72,8 @@ class Manager {
         .invoke(`creatorCallback not provided`, 500, 'E_INVALID_QUEUE_DRIVER')
     }
 
-    if (driver.indexOf('/') === -1) {
+    if ((driver.indexOf('/') === -1) ||
+      (driver.charAt(0) === '@')) {
       return creatorCallback(require(driver))
     }
 
