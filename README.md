@@ -39,7 +39,7 @@ const Mail = use('Mail')
 
 class SendEmail extends Job {
 	
-    get queue(){
+	get queue(){
 		return 'low'
 	}
     

@@ -57,6 +57,11 @@ module.exports = {
     }
   },
   rabbitmq: {
-
+    high:{
+    
+    },
+    low:{
+    
+    }
   }
 }
