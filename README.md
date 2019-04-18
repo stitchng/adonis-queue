@@ -16,11 +16,13 @@ An addon/plugin package to provide driver-based job queueing services in AdonisJ
 
 ## Usage
 
->Add a job file to the jobs folder using the command. The command below creates the file `app/Jobs/SendEmail.js`
+>Add a job file to the jobs folder using the command. The command below creates the file `app/Jobs/SendEmail.js`. The queue flag in the command is for setting the queue priority channel. The queue flag has only 2 possible values:    _high_ and _low_
 
 ```bash
 
     $ adonis make:job SendEmail
+
+	$ adonis make:job SendEmail --queue=low
 
 ```
 
