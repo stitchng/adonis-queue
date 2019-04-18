@@ -29,7 +29,7 @@ class Queue {
           that._jobUuid = 0
         })
       } catch (err) {
-        console.error('@@adonis/Queue: Adonis Queue failed to shut down properly', err)
+        console.error('@@adonisjs/Queue: Adonis Queue failed to shut down properly', err)
       }
     })
   }
@@ -44,11 +44,22 @@ class Queue {
     }
 
     if (!this._queuesPool[name]) {
-      this._queuesPool[name] = this.manager.makeDriverInstance(driver, DriverClass => {
+      let _queue = this.manager.makeDriverInstance(driver, (DriverClass) => {
         return new DriverClass(name, this.getByName(name))
-      })/* .on('ready', () => {
-        console.log(`@@adonis/Queue: Queue [${name}] now ready`)
-      }) */
+      })
+
+      switch (driver) {
+        case 'redis':
+          _queue.on('ready', () => {
+            console.log(`@@adonisjs/Queue: [Redis] Queue [${name}] now ready`)
+          })
+          break
+        case 'rabbitmq':
+          ;
+          break
+      }
+
+      this._queuesPool[name] = _queue
     }
 
     this._currentlySelectedQueueName = name
@@ -71,7 +82,7 @@ class Queue {
         this.select(job.queue)
 
         if ((queue = this._queuesPool[this._currentlySelectedQueueName]) === null) {
-          throw new Error('@@adonisjs/Queue: No Queue Selected/Added To Pool')
+          throw new Error('@@adonisjs/Queue: no Queue provided/available (from pool) for operation')
         }
       }
 
@@ -89,22 +100,34 @@ class Queue {
         _job.on('failed', job.failed.bind(job))
         _job.on('succeeded', job.succeeded.bind(job))
         _job.on('retrying', job.retrying.bind(job))
-        queue.process(2, job.handle.bind(job))
+        queue.process(1, job.handle.bind(job))
       })
 
       return _job.setId(this._jobUuid)
         .timeout(job.timeOut || 0)
         .backoff('fixed', job.retryUntil || 0)
         .retries(job.retryCount || 2)
-        .save(async (err, job) => { // See: https://github.com/bee-queue/bee-queue/issues/147
+        .save(async (err, $job) => { // See: https://github.com/bee-queue/bee-queue/issues/147
           if (err) {
-            console.error(`@@adonisjs/Queue: failed creating job ${this._jobUuid}`)
+            console.error(`@@adonisjs/Queue: failed in creating job id=${this._jobUuid} on queue: ${_name}`)
+
             // Known error when redis has not all lua scripts loaded properly
             if (err.command === 'EVALSHA') {
               await bqScripts.buildCache(this.getByName(_name))
-              console.info('Successfully reloaded Lua scripts into cache!')
-              // create job again
-              queue.createJob(job.getArg(job)).save()
+              console.info(`@@adonisjs/Queue: successfully reloaded Lua scripts into cache; retrying job creation id=${this._jobUuid}`)
+
+              // try to create job again
+              try {
+                await queue.removeJob(this._jobUuid)
+              } catch (ex) { $job = null } finally {
+                _job = $job || queue.createJob(job.getArg(job))
+
+                _job.setId(this._jobUuid)
+                  .timeout(job.timeOut || 0)
+                  .backoff('fixed', job.retryUntil || 0)
+                  .retries(job.retryCount || 2)
+                  .save()
+              }
             }
           }
         })
@@ -112,7 +135,7 @@ class Queue {
 
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        reject(new Error(`@@adonisjs/Queue: [argument] Instance not of type [#Job]`))
+        reject(new Error(`@@adonisjs/Queue: [argument] instance not of type [#Job]`))
       }, 10)
     })
   }
@@ -130,7 +153,7 @@ class Queue {
     let queue = this._currentlySelectedQueueName && this._queuesPool[this._currentlySelectedQueueName]
 
     if (queue === void 0 || queue === null) {
-      throw new Error('@@adonis/Queue: No Queue Selected/Added To Pool')
+      throw new Error('@@adonisjs/Queue: no Queue provided/available (from pool) for operation')
     }
 
     this._currentlySelectedQueueName = null
@@ -142,7 +165,7 @@ class Queue {
     let TIMEOUT = 80 * 1000
 
     if (queue === void 0 || queue === null) {
-      throw new Error('@@adonis/Queue: No Queue provided')
+      throw new Error('@@adonisjs/Queue: no Queue provided/available (from pool) for operation')
     }
 
     return queue.close(TIMEOUT)
@@ -150,7 +173,7 @@ class Queue {
 
   async destroy (queue) {
     if (queue === void 0 || queue === null) {
-      throw new Error('@@adonis/Queue: No Queue Selected/Added To Pool')
+      throw new Error('@@adonisjs/Queue: no Queue provided/available (from pool) for operation')
     }
 
     return queue.destroy()

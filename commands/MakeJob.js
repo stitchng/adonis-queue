@@ -1,6 +1,6 @@
 'use strict'
 
-const Base = require('./Job/Base')
+const Base = require('./Job/Base.js')
 
 class MakeJob extends Base {
   /**
@@ -14,7 +14,7 @@ class MakeJob extends Base {
     return `
     make:job 
     { name: Name of the job to be queued }
-    { --queue=@value: Specify queue channel to be used for dispatch }
+    { --queue=@value: Specify queue channel to be used for job dispatch }
     `
   }
 
@@ -34,7 +34,7 @@ class MakeJob extends Base {
    *
    * @method handle
    *
-   * @param  {String} name < Destructure args >
+   * @param  {String} name < Destructure Args >
    * @param  {Object} options
    *
    * @return {void}
