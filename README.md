@@ -117,18 +117,39 @@ const Queue = use('Queue')
 
 const SendEmail = use('App/Jobs/SendEmail')
 
-Event.on('user_registered', async () => {
+Event.on('user_registered', async ( _email ) => {
     await Queue.select('high').andDispatch(new SendEmail( // dispatch to the "high" priority queue
-    	'queensaisha04@gmail.com',
-	'support@example.com',
-	'YOU ARE WELCOME',
-	'emails.template' // AdonisJS view template file in "resources/views"
+    	_email,
+		'support@example.com',
+		'YOU ARE WELCOME',
+		'emails.template' // AdonisJS view template file:  "resources/views/emails/template.edge"
     ))
 })
 
 ```
 
->You can also access the queue instance via the http context in a controller/middleware
+>Then, go to the `start/routes.js` file of an **AdonisJS Framework** installation and add the following code to it
+
+```js
+
+Route.post('user/register/:type', ({ request, params: { type }, respopnse }) => {
+	const body = request.post()
+
+	Event.fire('user_registered', 'queensaisha04@gmail.com') // Invoke the 'SendEmail' Job (to send an email) via the Event Bus
+
+	if (request.format() === 'json') {
+  		return response.status(200).json({
+		  	status:'success'
+		})
+	}else{
+		return response.send('success')
+	}
+})
+```
+
+## More
+
+>You can also access the queue instance via the **AdonisJS Http Context** in a controller/middleware
 
 ```js
 

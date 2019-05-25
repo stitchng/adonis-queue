@@ -16,7 +16,8 @@ class QueueProvider extends ServiceProvider {
   _registerManager () {
     const Manager = require('../src/Queue/Manager.js')
     this.app.manager('Adonis/Src/Queue', new Manager({
-      'redis': 'bee-queue'
+      'redis': 'bee-queue',
+      'rabbitmq': 'rabbit-queue'
     }))
   }
 

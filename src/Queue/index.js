@@ -14,6 +14,11 @@ class Queue {
       return Config.get(`queue.driver`)
     }
 
+    this.getDriverUrl = () => {
+      let driver = this.getSetDriver()
+      return Config.get(`queue.${driver}.url`)
+    }
+
     this.getByName = (name) => {
       let driver = this.getSetDriver()
       return Config.get(`queue.${driver}.${name}`)
@@ -45,7 +50,10 @@ class Queue {
 
     if (!this._queuesPool[name]) {
       let _queue = this.manager.makeDriverInstance(driver, (DriverClass) => {
-        return new DriverClass(name, this.getByName(name))
+        return new DriverClass(
+          (driver === 'redis' ? name : this.getDriverUrl()),
+          this.getByName(name)
+        )
       })
 
       switch (driver) {
@@ -55,11 +63,22 @@ class Queue {
           })
           break
         case 'rabbitmq':
-          ;
+          _queue.on('connected', () => {
+            // create queues, add halders etc.
+            // this will be called on every reconnection too
+            console.log(`@@adonisjs/Queue: [RabbitMQ] Queue [${name}] now ready`)
+          })
           break
       }
 
-      this._queuesPool[name] = _queue
+      if (driver === 'redis') {
+        this._queuesPool[name] = _queue
+      } else {
+        ;/* this._queuesPool[name] = await _queue.createQueue(name, { durable: false }, (msg, ack) => {
+              console.log(msg.content.toString());
+              ack(null, 'response');
+          }); */
+      }
     }
 
     this._currentlySelectedQueueName = name
