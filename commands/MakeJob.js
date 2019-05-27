@@ -49,7 +49,8 @@ class MakeJob extends Base {
         typeof options.queue !== 'string') {
         options.queue = 'high'
       } else {
-        if (/^(?:high|low)$/.test(options.queue)) {
+        const regexp = new RegExp('^(high|low)$', 'gm');
+        if (!regexp.test(options.queue)) {
           throw new Error("invalid value for \"--queue\" flag: value is either 'high' or 'low'")
         }
       }
