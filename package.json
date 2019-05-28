@@ -16,7 +16,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "node test/provider.spec.js"
+    "test": "node japaFile.js"
   },
   "keywords": [
     "redis",

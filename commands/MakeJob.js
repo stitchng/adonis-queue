@@ -1,6 +1,7 @@
 'use strict'
 
 const Base = require('./Job/Base.js')
+const INVALID_QUEUE_PARAM_MESSAGE = "invalid value for \"--queue\" flag: value is either 'high' or 'low'"
 
 class MakeJob extends Base {
   /**
@@ -51,7 +52,7 @@ class MakeJob extends Base {
       } else {
         const regexp = new RegExp('^(high|low)$', 'gm');
         if (!regexp.test(options.queue)) {
-          throw new Error("invalid value for \"--queue\" flag: value is either 'high' or 'low'")
+          throw new Error(INVALID_QUEUE_PARAM_MESSAGE)
         }
       }
 
@@ -63,4 +64,5 @@ class MakeJob extends Base {
   }
 }
 
-module.exports = MakeJob
+exports = module.exports = MakeJob
+exports.INVALID_QUEUE_PARAM_MESSAGE = INVALID_QUEUE_PARAM_MESSAGE
