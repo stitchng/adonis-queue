@@ -73,12 +73,10 @@ test.group('AdonisJS Queue, Job & Job Provider Test(s)', (group) => {
     assert.exists(ioc.use('Adonis/Src/Job'))
   })
 
-  test('job instance makes arguments available when makeArg() is called and logger is set properly', async (assert) => {
+  test('job instance makes arguments available when makeArg() is called', async (assert) => {
     let job = new ProcessBackup('new backup')
     job.makeArg(job)
-    job.logger = ioc.use('Logger')
 
-    assert.exists(job._logger)
     assert.equal(job.backupName, 'new backup')
   })
 })
