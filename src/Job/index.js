@@ -43,6 +43,7 @@ class Job {
     this._logger = null
 
     var _queue = null
+    var _derivedArgs = derivedArgs
 
     this.setQueueTarget = function ($queue) {
       _queue = $queue
@@ -53,7 +54,7 @@ class Job {
     }
 
     this.makeArg = function (derived) {
-      return attachArgsToTarget((derived || this), derivedArgs)
+      return attachArgsToTarget((derived || this), _derivedArgs)
     }
   }
 
