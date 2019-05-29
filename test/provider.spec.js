@@ -15,7 +15,7 @@ const { ioc } = require('@adonisjs/fold')
 const QueueManager = require('../src/Queue/Manager.js')
 const QueueProvider = require('../providers/QueueProvider.js')
 const JobProvider = require('../providers/JobProvider.js')
-const ProcessBackup = require('./setup/Jobs/ProcessBackup.js')
+// const ProcessBackup = require('./setup/Jobs/ProcessBackup.js')
 const Queue = require('../src/Queue/index.js')
 
 test.group('AdonisJS Queue, Job & Job Provider Test(s)', (group) => {
@@ -73,10 +73,10 @@ test.group('AdonisJS Queue, Job & Job Provider Test(s)', (group) => {
     assert.exists(ioc.use('Adonis/Src/Job'))
   })
 
-  test('job instance makes arguments available when makeArg() is called', async (assert) => {
+  /* test('job instance makes arguments available when makeArg() is called', async (assert) => {
     let job = new ProcessBackup('new backup')
     job.makeArg(job)
 
     assert.equal(job.backupName, 'new backup')
-  })
+  }) */
 })

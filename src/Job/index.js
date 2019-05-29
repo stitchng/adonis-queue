@@ -40,7 +40,6 @@ const attachArgsToTarget = function (func, funcArgs, box) {
 class Job {
   constructor (derivedArgs) {
     this.id = null
-    this._logger = null
 
     var _queue = null
     var _derivedArgs = derivedArgs
