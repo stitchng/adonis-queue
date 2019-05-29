@@ -12,7 +12,7 @@ class JobCommandsProvider extends ServiceProvider {
    * @return {void}
    */
   _registerMakeJobCommand () {
-    this.app.bind('Adonis/Commands/Make:Job', () => require('../app/Commands/MakeJob'))
+    this.app.bind('Adonis/Commands/Make:Job', () => require('../commands/MakeJob'))
   }
 
   /**
