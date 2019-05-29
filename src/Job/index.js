@@ -52,8 +52,8 @@ class Job {
       return _queue
     }
 
-    this.getArg = function (derived) {
-      return attachArgsToTarget(derived, derivedArgs)
+    this.makeArg = function (derived) {
+      return attachArgsToTarget((derived || this), derivedArgs)
     }
   }
 

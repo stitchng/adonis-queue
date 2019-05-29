@@ -14,11 +14,11 @@ const { Config, Logger } = require('@adonisjs/sink')
 const { ioc } = require('@adonisjs/fold')
 const QueueManager = require('../src/Queue/Manager.js')
 const QueueProvider = require('../providers/QueueProvider.js')
-const JobProvider = require('../providers/JobProvider')
+const JobProvider = require('../providers/JobProvider.js')
+const ProcessBackup = require('./setup/Jobs/ProcessBackup.js')
 const Queue = require('../src/Queue/index.js')
-// const Job = require('../src/Job/index.js')
 
-test.group('AdonisJS Queue & Job Provider Test(s)', (group) => {
+test.group('AdonisJS Queue, Job & Job Provider Test(s)', (group) => {
   group.before(() => {
     ioc.singleton('Adonis/Src/Config', () => {
       let config = new Config()
@@ -32,8 +32,12 @@ test.group('AdonisJS Queue & Job Provider Test(s)', (group) => {
     ioc.singleton('Exception', () => {
       return {
         handlers: {},
+        reporters: {},
         handle (errName, errHandler) {
           this.handlers[errName] = errHandler
+        },
+        report (errName, errReporter) {
+          this.reporters[errName] = errReporter
         }
       }
     })
@@ -67,5 +71,14 @@ test.group('AdonisJS Queue & Job Provider Test(s)', (group) => {
     provider.register()
 
     assert.exists(ioc.use('Adonis/Src/Job'))
+  })
+
+  test('job instance makes arguments available when makeArg() is called and logger is set properly', async (assert) => {
+    let job = new ProcessBackup('new backup')
+    job.makeArg(job)
+    job.logger = ioc.use('Logger')
+
+    assert.exists(job._logger)
+    assert.equal(job.backupName, 'new backup')
   })
 })

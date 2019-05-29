@@ -50,7 +50,7 @@ class MakeJob extends Base {
         typeof options.queue !== 'string') {
         options.queue = 'high'
       } else {
-        const regexp = new RegExp('^(high|low)$', 'gm');
+        const regexp = new RegExp('^(high|low)$', 'gm')
         if (!regexp.test(options.queue)) {
           throw new Error(INVALID_QUEUE_PARAM_MESSAGE)
         }

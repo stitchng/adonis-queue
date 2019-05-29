@@ -93,7 +93,7 @@ class Queue {
     if (typeof job === 'object' &&
               typeof job.handle === 'function' &&
                   typeof job.failed === 'function' &&
-                        typeof job.getArg === 'function' &&
+                        typeof job.makeArg === 'function' &&
                           typeof job.constructor === 'function') {
       let queue = this._currentlySelectedQueueName && this._queuesPool[this._currentlySelectedQueueName]
 
@@ -110,7 +110,7 @@ class Queue {
       let _name = this._currentlySelectedQueueName
       this._currentlySelectedQueueName = null
 
-      let _job = queue.createJob(job.getArg(job))
+      let _job = queue.createJob(job.makeArg(job))
 
       job.setQueueTarget(queue)
 
@@ -139,7 +139,7 @@ class Queue {
               try {
                 await queue.removeJob(this._jobUuid)
               } catch (ex) { $job = null } finally {
-                _job = $job || queue.createJob(job.getArg(job))
+                _job = $job || queue.createJob(job.makeArg(job))
 
                 _job.setId(this._jobUuid)
                   .timeout(job.timeOut || 0)

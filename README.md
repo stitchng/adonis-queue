@@ -57,7 +57,7 @@ class SendEmail extends Job {
 		//....
 		console.log(`Job [${this.constructor.name}] - handler called: status=running; id=${this.id} `)
     
-		link.reportProgress(18)
+		link.reportProgress(1)
 
 		let _data = link.data // arguments passed into the constructor
 		let error = null
@@ -69,16 +69,14 @@ class SendEmail extends Job {
 				message.from(_data.emailFrom) 
 				message.subject(_data.emailSubject)
 			})
+			link.reportProgress(45)
 		}catch(err){
-			error = err
+			link.reportProgress(65)
+			throw err
 		}finally{
 
 			//...
-			link.reportProgress(98)
-			
-			if(error){
-				throw error
-			}
+			link.reportProgress(100)
 		}
 		
 		return result
