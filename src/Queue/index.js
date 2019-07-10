@@ -125,7 +125,7 @@ class Queue {
           queue.process(1, job.handle.bind(job))
           job.processCalled = true
         }
-      }, 0)
+      }, 1)
 
       return _job.setId(this._jobUuid)
         .timeout(job.timeOut || 0)
