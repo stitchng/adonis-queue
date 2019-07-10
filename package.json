@@ -1,6 +1,6 @@
 {
   "name": "adonisjs-queue",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "An addon/plugin package to provide driver-based job queueing services in AdonisJS 4.0+",
   "main": "index.js",
   "files": [

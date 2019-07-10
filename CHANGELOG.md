@@ -1,3 +1,11 @@
+<a name="0.1.6"></a>
+# 0.1.6 (2019-07-10)
+
+### Fixed
+- Fixed `TypeError: this.queuesPool is not iterable` by [@stitchng](https://github.com/stitchng). Related: [Issue #3](https://github.com/stitchng/adonis-queue/issues/3)
+
+- Fixed `Error: Cannot call Queue#process twice` by [@MarkDylan49](https://github.com/MarkDylan49). Related: [Issue #4](https://github.com/stitchng/adonis-queue/issues/4)
+
 <a name="0.1.5"></a>
 # 0.1.5 (2019-05-29)
 
@@ -12,9 +20,6 @@
 
 <a name="0.1.3"></a>
 # 0.1.3 (2019-04-18)
-
-### Bug Fixes
-- Fixed error with _"Cannot call Queue#process twice"_
 
 ### Feature Added
 - Setup standard error messages

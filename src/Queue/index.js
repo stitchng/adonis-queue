@@ -113,14 +113,19 @@ class Queue {
       let _job = queue.createJob(job.makeArg(job))
 
       job.setQueueTarget(queue)
+      job.processCalled = false
 
-      process.nextTick(() => {
-        job.id = this._jobUuid
+      job.id = this._jobUuid
+      /* process.nextTick(() => { */
+      setTimeout(function () {
         _job.on('failed', job.failed.bind(job))
         _job.on('succeeded', job.succeeded.bind(job))
         _job.on('retrying', job.retrying.bind(job))
-        queue.process(1, job.handle.bind(job))
-      })
+        if (job.processCalled === false) {
+          queue.process(1, job.handle.bind(job))
+          job.processCalled = true
+        }
+      }, 0)
 
       return _job.setId(this._jobUuid)
         .timeout(job.timeOut || 0)
@@ -162,9 +167,12 @@ class Queue {
   async destroyAll () {
     // See: https://stackoverflow.com/questions/44410119/in-javascript-does-using-await-inside-a-loop-block-the-loop/44410481
 
-    for (let queue of this._queuesPool) {
-      await this.close(queue)
-      await this.destroy(queue)
+    for (let queueName in this._queuesPool) {
+      if (this._queuesPool.hasOwnProperty(queueName)) {
+        let queue = this._queuesPool[queueName]
+        await this.close(queue)
+        await this.destroy(queue)
+      }
     }
   }
 
