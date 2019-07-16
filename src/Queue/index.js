@@ -117,13 +117,13 @@ class Queue {
 
       job.id = this._jobUuid
       /* process.nextTick(() => { */
-      setTimeout(function () {
+      setTimeout(function runner() {
         _job.on('failed', job.failed.bind(job))
         _job.on('succeeded', job.succeeded.bind(job))
         _job.on('retrying', job.retrying.bind(job))
-        if (job.processCalled === false) {
-          queue.process(1, job.handle.bind(job))
-          job.processCalled = true
+        if (!runner.processCalled) {
+          queue.process(job.handle.bind(job))
+          runner.processCalled = true
         }
       }, 1)
 
