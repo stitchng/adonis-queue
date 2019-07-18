@@ -35,8 +35,10 @@ An addon/plugin package to provide driver-based job queueing services in AdonisJ
 ```
 
 ```js
-
+/** @type {typeof import('adonisjs-queue/src/Job')} */
 const Job = use('Job')
+
+/** @type {typeof import('@adonisjs/mail/src/Mail')} */
 const Mail = use('Mail')
 
 class SendEmail extends Job {
@@ -110,7 +112,10 @@ module.exports = SendEmail
 
 'use strict'
 
+/** @type {typeof import('@adonisjs/framework/src/Event')} */
 const Event = use('Event')
+
+/** @type {typeof import('adonisjs-queue/src/Job')} */
 const Queue = use('Queue')
 
 const SendEmail = use('App/Jobs/SendEmail')
@@ -131,6 +136,9 @@ Event.on('user_registered', async ( _email ) => {
 >Then, go to the `start/routes.js` file of an **AdonisJS Framework** installation and add the following code to it
 
 ```js
+
+/** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
+const Route = use('Route')
 
 Route.post('user/register/:type', ({ request, params: { type }, respopnse }) => {
 	const body = request.post()
