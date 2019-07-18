@@ -1,5 +1,5 @@
 <a name="0.1.7"></a>
-# 0.1.7 (2019-07-17)
+# 0.1.7 (2019-07-18)
 
 ### Fixed
 - Fixed `Error: Cannot call Queue#process twice` by [@MarkDylan49](https://github.com/MarkDylan49). Related: [Issue #4](https://github.com/stitchng/adonis-queue/issues/4)
