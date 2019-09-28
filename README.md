@@ -34,6 +34,12 @@ An addon/plugin package to provide driver-based job queueing services in AdonisJ
 
 ```
 
+## Installation Instructions
+
+See the _instructions.md_ file for the complete installation steps and follow as stated.
+
+## Writing A Job
+
 ```js
 /** @type {typeof import('adonisjs-queue/src/Job')} */
 const Job = use('Job')
@@ -127,7 +133,15 @@ Event.on('user_registered', async ( _email ) => {
 		_email,
 		'support@example.com',
 		'YOU ARE WELCOME',
-		'emails.template' // AdonisJS view template file: "resources/views/emails/template.edge"
+		'emails.template_1' // AdonisJS view template file: "resources/views/emails/template_1.edge"
+    ));
+    
+    // implicitly calls select('high')
+    await Queue.dispatch(new SendMail(
+    		_email,
+		'support@example.com',
+		'NEXT STEPS',
+		'emails.template_2' // AdonisJS view template file: "resources/views/emails/template_2.edge"
     ));
 })
 
@@ -154,6 +168,10 @@ Route.post('user/register/:type', ({ request, params: { type }, respopnse }) => 
 	}
 })
 ```
+
+## Possible Gocthas
+
+If the `select()` function explicitly and then call `andDispatch()` OR `dispatch()` on the `Queue` object, you override the queue settings on the job instance `job.queue`.
 
 ## More
 
