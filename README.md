@@ -36,7 +36,7 @@ An addon/plugin package to provide driver-based job queueing services in AdonisJ
 
 ## Installation Instructions
 
-See the _instructions.md_ file for the complete installation steps and follow as stated.
+See the [_instructions.md_](https://github.com/stitchng/adonis-queue/blob/master/instructions.md) file for the complete installation steps and follow as stated.
 
 ## Writing A Job
 
@@ -171,7 +171,7 @@ Route.post('user/register/:type', ({ request, params: { type }, respopnse }) => 
 
 ## Possible Gocthas
 
-If the `select()` function explicitly and then call `andDispatch()` OR `dispatch()` on the `Queue` object, you override the queue settings on the job instance `job.queue`.
+If the `select()` method is explicitly called before a (chained) call `andDispatch()` OR `dispatch()` is made on the `Queue` object, the queue getter value on a **job** instance (`job.queue`) is automatically overridden by the value passed to the *select* method like so `select('low')`. So, be well aware of how calling `select` explicitly affects things.
 
 ## More
 
