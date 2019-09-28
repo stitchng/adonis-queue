@@ -137,7 +137,7 @@ Event.on('user_registered', async ( _email ) => {
     ));
     
     // implicitly calls select('high')
-    await Queue.dispatch(new SendMail(
+    await Queue.dispatch(new SendEmail(
     		_email,
 		'support@example.com',
 		'NEXT STEPS',
