@@ -9,8 +9,8 @@ class Queue {
     this._jobUuid = 0
     this._queuesPool = {}
     this._currentlySelectedQueueName = null
-    this._dispatchReady = false;
-    
+    this._dispatchReady = false
+
     this.getSetDriver = () => {
       return Config.get(`queue.driver`)
     }
@@ -48,9 +48,9 @@ class Queue {
     if (!driver) {
       driver = this.getSetDriver()
     }
-    
-    let _queue = this._queuesPool[name];
-    
+
+    let _queue = this._queuesPool[name]
+
     if (!_queue || !!_queue.handler) {
       _queue = this.manager.makeDriverInstance(driver, (DriverClass) => {
         return new DriverClass(
@@ -84,7 +84,7 @@ class Queue {
       }
     }
 
-    this._dispatchReady = true;
+    this._dispatchReady = true
     this._currentlySelectedQueueName = name
     return this
   }
@@ -94,22 +94,22 @@ class Queue {
   }
 
   async andDispatch (job) {
-      if (typeof job === 'object' &&
+    if (typeof job === 'object' &&
                 typeof job.handle === 'function' &&
                     typeof job.failed === 'function' &&
                           typeof job.makeArg === 'function' &&
                             typeof job.constructor === 'function') {
       if (!this._dispatchReady) {
-          if (job.queue) {
-            this.select(job.queue)
-          } else {
-            this.select() // selects the 'high' priority queue
-          }
+        if (job.queue) {
+          this.select(job.queue)
+        } else {
+          this.select() // selects the 'high' priority queue
+        }
       }
 
-      this._dispatchReady = false;
+      this._dispatchReady = false
 
-      let queue = this._queuesPool[this._currentlySelectedQueueName];
+      let queue = this._queuesPool[this._currentlySelectedQueueName]
 
       if (queue === undefined || queue === null) {
         throw new Error('@@adonisjs/Queue: no Queue provided/available (from pool) for operation')
@@ -135,7 +135,7 @@ class Queue {
           queue.process(job.handle.bind(job))
           runner.processCalled = true
         }
-      });
+      })
 
       return _job.setId(this._jobUuid)
         .timeout(job.timeOut || 0)

@@ -1,8 +1,16 @@
+<a name="0.1.8"></a>
+# 0.1.8 (2019-09-28)
+
+### Fixed
+- Fixed `Error: Cannot call Queue#process twice` by [@MarkDylan49](https://github.com/MarkDylan49). and [@sn0rcha](https://github.com/sn0rcha) 
+Related: [Issue #4](https://github.com/stitchng/adonis-queue/issues/4)
+Related: [Issue #5](https://github.com/stitchng/adonis-queue/issues/5)
+
 <a name="0.1.7"></a>
 # 0.1.7 (2019-07-18)
 
 ### Fixed
-- Fixed `Error: Cannot call Queue#process twice` by [@MarkDylan49](https://github.com/MarkDylan49). Related: [Issue #4](https://github.com/stitchng/adonis-queue/issues/4)
+- Fixed: Error on `Queue.close()` local handler whenever **HttpException** occurs
 
 <a name="0.1.6"></a>
 # 0.1.6 (2019-07-10)
@@ -14,7 +22,8 @@
 # 0.1.5 (2019-05-29)
 
 ### Fixed
-- Fixed Make:Job command path and Regex for flag validation by [@leandrofinger](https://github.com/leandrofinger). Related: [Issue #2](https://github.com/stitchng/adonis-queue/issues/2)
+- Fixed Make:Job command path and Regex for flag validation by [@leandrofinger](https://github.com/leandrofinger). 
+Related: [Issue #2](https://github.com/stitchng/adonis-queue/issues/2)
 
 <a name="0.1.4"></a>
 # 0.1.4 (2019-05-25)
