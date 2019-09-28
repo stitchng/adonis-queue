@@ -9,7 +9,8 @@ class Queue {
     this._jobUuid = 0
     this._queuesPool = {}
     this._currentlySelectedQueueName = null
-
+    this._dispatchReady = false;
+    
     this.getSetDriver = () => {
       return Config.get(`queue.driver`)
     }
@@ -47,9 +48,11 @@ class Queue {
     if (!driver) {
       driver = this.getSetDriver()
     }
-
-    if (!this._queuesPool[name]) {
-      let _queue = this.manager.makeDriverInstance(driver, (DriverClass) => {
+    
+    let _queue = this._queuesPool[name];
+    
+    if (!_queue || !!_queue.handler) {
+      _queue = this.manager.makeDriverInstance(driver, (DriverClass) => {
         return new DriverClass(
           (driver === 'redis' ? name : this.getDriverUrl()),
           this.getByName(name)
@@ -81,6 +84,7 @@ class Queue {
       }
     }
 
+    this._dispatchReady = true;
     this._currentlySelectedQueueName = name
     return this
   }
@@ -90,19 +94,25 @@ class Queue {
   }
 
   async andDispatch (job) {
-    if (typeof job === 'object' &&
-              typeof job.handle === 'function' &&
-                  typeof job.failed === 'function' &&
-                        typeof job.makeArg === 'function' &&
-                          typeof job.constructor === 'function') {
-      let queue = this._currentlySelectedQueueName && this._queuesPool[this._currentlySelectedQueueName]
+      if (typeof job === 'object' &&
+                typeof job.handle === 'function' &&
+                    typeof job.failed === 'function' &&
+                          typeof job.makeArg === 'function' &&
+                            typeof job.constructor === 'function') {
+      if (!this._dispatchReady) {
+          if (job.queue) {
+            this.select(job.queue)
+          } else {
+            this.select() // selects the 'high' priority queue
+          }
+      }
 
-      if (queue === void 0 || queue === null) {
-        this.select(job.queue)
+      this._dispatchReady = false;
 
-        if ((queue = this._queuesPool[this._currentlySelectedQueueName]) === null) {
-          throw new Error('@@adonisjs/Queue: no Queue provided/available (from pool) for operation')
-        }
+      let queue = this._queuesPool[this._currentlySelectedQueueName];
+
+      if (queue === undefined || queue === null) {
+        throw new Error('@@adonisjs/Queue: no Queue provided/available (from pool) for operation')
       }
 
       this._jobUuid += 1
@@ -116,8 +126,8 @@ class Queue {
       job.processCalled = false
 
       job.id = this._jobUuid
-      /* process.nextTick(() => { */
-      setTimeout(function runner () {
+      /* setTimeout(() => { */
+      process.nextTick(function runner () {
         _job.on('failed', job.failed.bind(job))
         _job.on('succeeded', job.succeeded.bind(job))
         _job.on('retrying', job.retrying.bind(job))
@@ -125,7 +135,7 @@ class Queue {
           queue.process(job.handle.bind(job))
           runner.processCalled = true
         }
-      }, 1)
+      });
 
       return _job.setId(this._jobUuid)
         .timeout(job.timeOut || 0)
