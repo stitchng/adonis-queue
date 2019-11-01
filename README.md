@@ -59,7 +59,7 @@ class SendEmail extends Job {
 		this.timeOut = 50; // seconds
 		this.retryCount = 3;
 		this.retryUntil = 200; // seconds
-		this.delay = Date.parse('2038-01-19T03:14:08.000Z') // omitir essa linha se não for necessário
+		this.delay = Date.parse('2038-01-19T03:14:08.000Z') // // omit this line if not required
 	}
 
 	async handle(link, done) {
