@@ -141,6 +141,7 @@ class Queue {
         .timeout(job.timeOut || 0)
         .backoff('fixed', job.retryUntil || 0)
         .retries(job.retryCount || 2)
+        .delayUntil(job.delayUntil || 0)
         .save(async (err, $job) => { // See: https://github.com/bee-queue/bee-queue/issues/147
           if (err) {
             console.error(`@@adonisjs/Queue: failed in creating job id=${this._jobUuid} on queue: ${_name}`)
@@ -160,6 +161,7 @@ class Queue {
                   .timeout(job.timeOut || 0)
                   .backoff('fixed', job.retryUntil || 0)
                   .retries(job.retryCount || 2)
+                  .delayUntil(job.delayUntil || 0)
                   .save()
               }
             }
