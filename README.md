@@ -228,7 +228,7 @@ MIT
 
 ## Credits
 
-- [Ifeora Okechukwu <Head Of Technology - Oparand>](https://twitter.com/isocroft)
+- [Ifeora Okechukwu](https://twitter.com/isocroft)
 - [Ahmad Abdul-Aziz](https://instagram.com/dev_amaz)
 
 ## Contributing

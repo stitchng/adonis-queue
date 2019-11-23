@@ -1,3 +1,9 @@
+<a name="0.1.9"></a>
+# 0.1.9 (2019-11-23)
+
+### Feature Added
+- Added `delayUntil` config to delay firing off a job by seconds specified
+
 <a name="0.1.8"></a>
 # 0.1.8 (2019-09-28)
 

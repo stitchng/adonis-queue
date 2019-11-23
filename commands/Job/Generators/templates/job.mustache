@@ -9,7 +9,8 @@ class {{name}} extends Job {
       
       this.timeOut = 10; // seconds: time out for queue
       this.retryCount = 1; // number of times to retry
-      this.retryUntil = 200; // seconds: retry delay
+      this.retryUntil = 200; // seconds: retry
+      this.delayUntil = 0; // seconds: delay
     }
 
     get queue () {
