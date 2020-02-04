@@ -1,3 +1,9 @@
+<a name="0.1.10"></a>
+# 0.1.10 (2020-02-06)
+
+### Fixed
+- Fixed README.md code example
+
 <a name="0.1.9"></a>
 # 0.1.9 (2019-11-23)
 

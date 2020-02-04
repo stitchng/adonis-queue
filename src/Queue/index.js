@@ -64,6 +64,9 @@ class Queue {
           _queue.on('ready', () => {
             console.log(`@@adonisjs/Queue: [Redis] Queue [${name}] now ready`)
           })
+          _queue.on('error', (err) => {
+            console.error(`@@adonisjs/Queue: [Redis] Queue [${name}] cannot be ready: ERROR; ${err.message}`)
+          })
           break
         case 'rabbitmq':
           _queue.on('connected', () => {
@@ -131,6 +134,7 @@ class Queue {
         _job.on('failed', job.failed.bind(job))
         _job.on('succeeded', job.succeeded.bind(job))
         _job.on('retrying', job.retrying.bind(job))
+        _job.on('')
         if (!runner.processCalled) {
           queue.process(job.handle.bind(job))
           runner.processCalled = true

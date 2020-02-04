@@ -18,23 +18,30 @@ class {{name}} extends Job {
     }
 
 	async handle(link, done) {
-		//....
+		// ...
 		console.log(`Job [${this.constructor.name}] - handler called: status=running; id=${this.id} `)
     }
+
+    progress(progress) {
+        // ...
+        console.log(`Job [${this.constructor.name}] - progress:${progress}%: status=running; id=${this.id} `)
+    }
   
-    failed(link, error) {
+    failed(error) {
         // ...
 		console.log(`Job [${this.constructor.name}] - status:failed; id=${this.id} `, error)
+
+        this.detach() // remove the job from the queue (when the job fails after 3 retries)
 	}
 	
-	retrying(link, error){
+	retrying(error){
         // ...
 		console.log(`Job [${this.constructor.name}] - status:retrying; id=${this.id} `, error)
 	}
 
-    succeeded(link){
+    succeeded(result){
         // ...
-        console.log(`Job [${this.constructor.name}] - status:succeeded; id=${this.id} `)
+        console.log(`Job [${this.constructor.name}] - status:succeeded; id=${this.id} `, result)
     }
 }
 
