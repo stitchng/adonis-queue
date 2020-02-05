@@ -29,14 +29,12 @@ class {{name}} extends Job {
   
     failed(error) {
         // ...
-		console.log(`Job [${this.constructor.name}] - status:failed; id=${this.id} `, error)
-
-        this.detach() // remove the job from the queue (when the job fails after 3 retries)
+		console.log(`Job [${this.constructor.name}] - status:failed; id=${this.id} `, error.message)
 	}
 	
 	retrying(error){
         // ...
-		console.log(`Job [${this.constructor.name}] - status:retrying; id=${this.id} `, error)
+		console.log(`Job [${this.constructor.name}] - status:retrying; id=${this.id} `, error.message)
 	}
 
     succeeded(result){

@@ -134,7 +134,7 @@ class Queue {
         _job.on('failed', job.failed.bind(job))
         _job.on('succeeded', job.succeeded.bind(job))
         _job.on('retrying', job.retrying.bind(job))
-        _job.on('')
+        _job.on('progress', job.progress.bind(job))
         if (!runner.processCalled) {
           queue.process(job.handle.bind(job))
           runner.processCalled = true

@@ -4,6 +4,9 @@
 ### Fixed
 - Fixed README.md code example
 
+### Feature Added
+- Updated dependency *bee-queue* to v1.2.3
+
 <a name="0.1.9"></a>
 # 0.1.9 (2019-11-23)
 
