@@ -56,8 +56,8 @@ class SendEmail extends Job {
 	constructor(emailAddress, emailFrom, emailSubject, emailBody) {
 		super(arguments)
 
-		this.timeOut = 50; // seconds
-		this.retryCount = 3;
+		this.timeOut = 100; // seconds
+		this.retryCount = 0;
 		this.retryUntil = 200; // seconds
 		this.delayUntil = Date.parse('2038-01-19T03:14:08.000Z') // optional, omit this line if not required
 	}
