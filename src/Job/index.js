@@ -62,7 +62,7 @@ class Job {
   }
 
   async handle () {
-    this._logger.info('@@adonis/Queue: job handler invoked');
+    this._logger.info('@@adonis/Queue: job handler invoked')
   }
 
   progress () {
@@ -78,7 +78,7 @@ class Job {
   }
 
   retrying () {
-    this._logger.info('@@adonis/Queue: retrying job handler invocation');
+    this._logger.info('@@adonis/Queue: retrying job handler invocation')
   }
 
   async detach () {
