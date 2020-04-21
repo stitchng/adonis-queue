@@ -1,8 +1,9 @@
 <a name="0.1.10"></a>
-# 0.1.10 (2020-02-06)
+# 0.1.10 (2020-04-21)
 
 ### Fixed
 - Fixed README.md code example
+- Fixed `retryCount` issue by [@afolabiabass](https://github.com/afolabiabass) Related: [Issue #9](https://github.com/stitchng/adonis-queue/issues/9)
 
 ### Feature Added
 - Updated dependency *bee-queue* to v1.2.3

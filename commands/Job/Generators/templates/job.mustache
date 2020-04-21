@@ -7,8 +7,8 @@ class {{name}} extends Job {
     constructor(){
       super(arguments)
       
-      this.timeOut = 10; // seconds: time out for queue
-      this.retryCount = 1; // number of times to retry
+      this.timeOut = 2000; // seconds: time out for queue
+      this.retryCount = 0; // number of times to retry
       this.retryUntil = 200; // seconds: retry
       this.delayUntil = 0; // seconds: delay
     }

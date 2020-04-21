@@ -62,7 +62,7 @@ class Job {
   }
 
   async handle () {
-    throw new Error('Method Invocation Invalid')
+    this._logger.info('@@adonis/Queue: job handler invoked');
   }
 
   progress () {
@@ -78,7 +78,7 @@ class Job {
   }
 
   retrying () {
-    throw new Error('Method Invocation Invalid')
+    this._logger.info('@@adonis/Queue: retrying job handler invocation');
   }
 
   async detach () {

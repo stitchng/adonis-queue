@@ -66,7 +66,7 @@ class SendEmail extends Job {
 		//....
 		console.log(`Job [${this.constructor.name}] - handler called: status=running; id=${this.id} `)
     
-		link.reportProgress(10)
+		await link.reportProgress(10)
 
 		let _data = link.data // arguments passed into the constructor
 		let error = null
@@ -78,16 +78,18 @@ class SendEmail extends Job {
 				message.from(_data.emailFrom) 
 				message.subject(_data.emailSubject)
 			})
-			link.reportProgress(50)
+			await link.reportProgress(50)
 		}catch(err){
-			link.reportProgress(50)
 			error = err
 			result = undefined
+			await link.reportProgress(50)
 		}finally{
-			link.reportProgress(100)
+			await link.reportProgress(100)
 		}
 		
-		return done(error, result);
+		return new Promise((resolve, reject) => {
+			error === null ? resolve(result) : reject(error)
+		});
 	}
 
 	progress(progress) {
@@ -99,7 +101,7 @@ class SendEmail extends Job {
     
 		console.log(`Job [${this.constructor.name}] - status:failed; id=${this.id} `, error.message)
 		
-		this.detach() // remove the job from the queue (when the job fails after 3 retries)
+		this.detach() // remove the job from the queue (when the job fails after all retries)
 	}
 	
 	retrying(error){

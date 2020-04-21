@@ -129,8 +129,9 @@ class Queue {
       job.processCalled = false
 
       job.id = this._jobUuid
-      /* setTimeout(() => { */
-      process.nextTick(function runner () {
+      // See: https://nodejs.org/uk/docs/guides/timers-in-node
+      /* process.nextTick(() => { */
+      setTimeout(function runner () {
         _job.on('failed', job.failed.bind(job))
         _job.on('succeeded', job.succeeded.bind(job))
         _job.on('retrying', job.retrying.bind(job))
@@ -139,13 +140,13 @@ class Queue {
           queue.process(job.handle.bind(job))
           runner.processCalled = true
         }
-      })
+      }, 500, {})
 
       return _job.setId(this._jobUuid)
-        .timeout(job.timeOut || 0)
-        .backoff('fixed', job.retryUntil || 0)
-        .retries(job.retryCount || 2)
-        .delayUntil(job.delayUntil || 0)
+        .timeout(typeof job.timeOut === 'number' ? job.timeOut : 3000)
+        .backoff('fixed', typeof job.retryUntil === 'number' ? job.retryUntil : 0)
+        .retries(typeof job.retryCount === 'number' ? job.retryCount : 0)
+        .delayUntil(typeof job.delayUntil === 'number' ? job.delayUntil : 0)
         .save(async (err, $job) => { // See: https://github.com/bee-queue/bee-queue/issues/147
           if (err) {
             console.error(`@@adonisjs/Queue: failed in creating job id=${this._jobUuid} on queue: ${_name}`)
